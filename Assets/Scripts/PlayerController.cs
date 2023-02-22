@@ -2,14 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
 	private int score = 0;
 	public int health = 5;
-
+	
 	public Rigidbody rb;
 	public float speed = 10f;
+
+	public Text scoreText;
+	public Text healthText;
+	public Image winloseBG;
+	public Text winloseText;
 
 	// Use this for initialization
 	void Start () {
@@ -41,25 +47,58 @@ public class PlayerController : MonoBehaviour {
 		if (other.tag == "Pickup")
 		{
 			score += 1;
-			Debug.Log("Score: " + score);
+			SetScoreText();
+			//Debug.Log("Score: " + score);
 			Destroy(other.gameObject);
 		}
 		if (other.tag == "Trap")
 		{
 			health -= 1;
-			Debug.Log("Health: " + health);
+			SetHealthText();
+			//Debug.Log("Health: " + health);
 		}
 		if (other.tag == "Goal")
 		{
-			Debug.Log("You Win!");
+			YouWinText();
+			StartCoroutine(LoadScene(3.0f));
+			//Debug.Log("You Win!");
 		}
 	}
 
 	void Update () {
 		if (health == 0)
 		{
-			Debug.Log("Game Over!");
-			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+			YouLoseText();
+			StartCoroutine(LoadScene(3.0f));
+			//Debug.Log("Game Over!");
+			//SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
+	}
+	
+	void SetScoreText(){
+		scoreText.text = "Score: " + score.ToString();
+	}
+
+	void SetHealthText(){
+		healthText.text = "Health: " + health.ToString();
+	}
+
+	void YouWinText(){
+		winloseBG.gameObject.SetActive(true);
+		winloseBG.color = Color.green;
+		winloseText.text = "You Win!";
+		winloseText.color = Color.black;
+	}
+
+	void YouLoseText(){
+		winloseBG.gameObject.SetActive(true);
+		winloseBG.color = Color.red;
+		winloseText.text = "You Lose!";
+		winloseText.color = Color.black;
+	}
+
+	IEnumerator LoadScene(float seconds){
+		yield return new WaitForSeconds(seconds);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 }
