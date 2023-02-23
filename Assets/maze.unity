@@ -6765,7 +6765,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   rb: {fileID: 2028275297}
-  speed: 10000
+  speed: 1000
   scoreText: {fileID: 42868503}
   healthText: {fileID: 1078498487}
   winloseBG: {fileID: 1352643098}
